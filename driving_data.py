@@ -1,27 +1,27 @@
 import cv2
 import random
-import numpy as np
+# import numpy as np
 
 xs = []
 ys = []
 
-#points to the end of the last batch
+# points to the end of the last batch
 train_batch_pointer = 0
 val_batch_pointer = 0
 
-#read data.txt
+# read data.txt
 with open("driving_dataset/data.txt") as f:
     for line in f:
         xs.append("driving_dataset/" + line.split()[0])
-        #the paper by Nvidia uses the inverse of the turning radius,
-        #but steering wheel angle is proportional to the inverse of turning radius
-        #so the steering wheel angle in radians is used as the output
+        # the paper by Nvidia uses the inverse of the turning radius,
+        # but steering wheel angle is proportional to the inverse of turning radius
+        # so the steering wheel angle in radians is used as the output
         ys.append(float(line.split()[1]) * 3.14159265 / 180)
 
-#get number of images
+# get number of images
 num_images = len(xs)
 
-#shuffle list of images
+# shuffle list of images
 c = list(zip(xs, ys))
 random.shuffle(c)
 xs, ys = zip(*c)
@@ -35,6 +35,7 @@ val_ys = ys[-int(len(xs) * 0.2):]
 num_train_images = len(train_xs)
 num_val_images = len(val_xs)
 
+
 def LoadTrainBatch(batch_size):
     global train_batch_pointer
     x_out = []
@@ -44,6 +45,7 @@ def LoadTrainBatch(batch_size):
         y_out.append([train_ys[(train_batch_pointer + i) % num_train_images]])
     train_batch_pointer += batch_size
     return x_out, y_out
+
 
 def LoadValBatch(batch_size):
     global val_batch_pointer
